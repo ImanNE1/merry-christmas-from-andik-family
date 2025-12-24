@@ -1,26 +1,328 @@
 @import "tailwindcss";
 
+/* ========================== */
+/*    CUSTOM CSS VARIABLES    */
+/* ========================== */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Christmas Color Palette */
+  --christmas-dark: #051014;
+  --christmas-darker: #020508;
+  --christmas-green: #1A4D2E;
+  --christmas-green-light: #2D7A4A;
+  --christmas-red: #8B0000;
+  --christmas-red-light: #C41E3A;
+  --christmas-gold: #D4AF37;
+  --christmas-gold-light: #F4D03F;
+  --christmas-silver: #C0C0C0;
+  --christmas-cream: #FFF8DC;
+  
+  /* Gradient Colors */
+  --gradient-gold: linear-gradient(135deg, #D4AF37 0%, #F4D03F 50%, #D4AF37 100%);
+  --gradient-dark: linear-gradient(180deg, #051014 0%, #0A1F26 50%, #051014 100%);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ========================== */
+/*    LENIS SMOOTH SCROLL     */
+/* ========================== */
+html.lenis, html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ========================== */
+/*    CUSTOM SCROLLBAR        */
+/* ========================== */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--christmas-dark);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--christmas-gold);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--christmas-gold-light);
+}
+
+/* ========================== */
+/*    BASE STYLES             */
+/* ========================== */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--christmas-dark);
+  color: white;
+  overflow-x: hidden;
+}
+
+/* ========================== */
+/*    TEXT GRADIENT EFFECT    */
+/* ========================== */
+.text-gradient-gold {
+  background: var(--gradient-gold);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ========================== */
+/*    GLOW EFFECTS            */
+/* ========================== */
+.glow-gold {
+  filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.5));
+}
+
+.glow-gold-strong {
+  filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.8))
+          drop-shadow(0 0 40px rgba(212, 175, 55, 0.4));
+}
+
+.text-glow-gold {
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.5),
+               0 0 20px rgba(212, 175, 55, 0.3),
+               0 0 30px rgba(212, 175, 55, 0.2);
+}
+
+.text-glow-white {
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5),
+               0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+/* ========================== */
+/*    GLASS MORPHISM          */
+/* ========================== */
+.glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-dark {
+  background: rgba(5, 16, 20, 0.8);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(212, 175, 55, 0.1);
+}
+
+/* ========================== */
+/*    ANIMATED BORDERS        */
+/* ========================== */
+.border-gradient {
+  position: relative;
+  border-radius: 12px;
+}
+
+.border-gradient::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: var(--gradient-gold);
+  border-radius: 14px;
+  z-index: -1;
+  opacity: 0.5;
+}
+
+/* ========================== */
+/*    ANIMATION KEYFRAMES     */
+/* ========================== */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(5deg);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 0.5;
+    filter: blur(20px);
+  }
+  50% {
+    opacity: 0.8;
+    filter: blur(30px);
+  }
+}
+
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes snowfall {
+  0% {
+    transform: translateY(-10vh) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) translateX(20px);
+    opacity: 0;
+  }
+}
+
+/* ========================== */
+/*    UTILITY ANIMATIONS      */
+/* ========================== */
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-slow {
+  animation: float 8s ease-in-out infinite;
+}
+
+.animate-float-fast {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.animate-twinkle {
+  animation: twinkle 2s ease-in-out infinite;
+}
+
+/* ========================== */
+/*    SPLIT TEXT STYLES       */
+/* ========================== */
+.split-parent {
+  overflow: hidden;
+}
+
+.split-child {
+  display: inline-block;
+}
+
+/* ========================== */
+/*    RESPONSIVE UTILITIES    */
+/* ========================== */
+@media (max-width: 768px) {
+  .mobile-text-sm {
+    font-size: 0.875rem;
+  }
+  
+  .mobile-padding {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+/* ========================== */
+/*    SELECTION STYLES        */
+/* ========================== */
+::selection {
+  background: var(--christmas-gold);
+  color: var(--christmas-dark);
+}
+
+::-moz-selection {
+  background: var(--christmas-gold);
+  color: var(--christmas-dark);
+}
+
+/* ========================== */
+/*    IMAGE LOADING           */
+/* ========================== */
+.img-loading {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* ========================== */
+/*    DECORATIVE ELEMENTS     */
+/* ========================== */
+.christmas-ornament {
+  position: relative;
+}
+
+.christmas-ornament::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 15px;
+  background: var(--christmas-gold);
+  border-radius: 2px;
+}
+
+/* ========================== */
+/*    SNOWFLAKE STYLES        */
+/* ========================== */
+.snowflake {
+  position: fixed;
+  color: white;
+  pointer-events: none;
+  z-index: 9999;
+  animation: snowfall linear infinite;
+}
+
+/* ========================== */
+/*    CARD HOVER EFFECTS      */
+/* ========================== */
+.card-hover {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 25px 50px -12px rgba(212, 175, 55, 0.25);
 }
