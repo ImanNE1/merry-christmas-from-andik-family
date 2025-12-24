@@ -171,17 +171,20 @@ const MusicPlayer = ({ shouldPlay }: { shouldPlay: boolean }) => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
+  const [hasStarted, setHasStarted] = useState(false);
 
   const togglePlay = () => {
     if (audioRef.current) {
       if (isPlaying) {
         audioRef.current.pause();
+        setIsPlaying(false);
       } else {
-        audioRef.current.play().catch(() => {
+        audioRef.current.play().then(() => {
+          setIsPlaying(true);
+        }).catch(() => {
           console.log('Play prevented');
         });
       }
-      setIsPlaying(!isPlaying);
     }
   };
 
@@ -192,17 +195,38 @@ const MusicPlayer = ({ shouldPlay }: { shouldPlay: boolean }) => {
     }
   };
 
-  // Play when shouldPlay becomes true
+  // Play when shouldPlay becomes true (only once)
   useEffect(() => {
-    if (shouldPlay && audioRef.current && !isPlaying) {
+    if (shouldPlay && audioRef.current && !hasStarted) {
       audioRef.current.volume = 0.5;
       audioRef.current.play().then(() => {
         setIsPlaying(true);
+        setHasStarted(true);
       }).catch((err) => {
         console.log('Play error:', err);
       });
     }
-  }, [shouldPlay, isPlaying]);
+  }, [shouldPlay, hasStarted]);
+
+  // Listen to audio events
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const handlePlay = () => setIsPlaying(true);
+    const handlePause = () => setIsPlaying(false);
+    const handleEnded = () => setIsPlaying(false);
+
+    audio.addEventListener('play', handlePlay);
+    audio.addEventListener('pause', handlePause);
+    audio.addEventListener('ended', handleEnded);
+
+    return () => {
+      audio.removeEventListener('play', handlePlay);
+      audio.removeEventListener('pause', handlePause);
+      audio.removeEventListener('ended', handleEnded);
+    };
+  }, []);
 
   return (
     <>
@@ -241,27 +265,9 @@ const MusicPlayer = ({ shouldPlay }: { shouldPlay: boolean }) => {
             ))}
           </div>
           <span className="text-white/70 text-xs font-[family-name:var(--font-montserrat)]">
-            Christmas Music
+            Hark the Herald Angels Sing
           </span>
         </div>
-
-        {/* Mute button */}
-        <button
-          onClick={toggleMute}
-          className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
-          style={{
-            background: 'rgba(5, 16, 20, 0.9)',
-            backdropFilter: 'blur(10px)',
-            border: '1px solid rgba(212, 175, 55, 0.3)'
-          }}
-          aria-label={isMuted ? 'Unmute' : 'Mute'}
-        >
-          {isMuted ? (
-            <FaVolumeMute className="text-white/70 text-sm" />
-          ) : (
-            <FaVolumeUp className="text-yellow-500 text-sm" />
-          )}
-        </button>
 
         {/* Play/Pause button */}
         <button
