@@ -648,7 +648,7 @@ const HeroSection = () => {
 
         {/* Subtitle */}
         <p className="hero-subtitle mt-8 md:mt-12 font-[family-name:var(--font-montserrat)] text-base md:text-xl text-white/70 max-w-2xl mx-auto leading-relaxed px-4">
-          Semoga damai dan sukacita menyertai Anda dan keluarga tercinta
+          Semoga damai dan sukacita menyertai Anda dan keluarga tercinta 
           <br className="hidden md:block" />
           di musim yang penuh keajaiban ini
         </p>
